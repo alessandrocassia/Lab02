@@ -5,7 +5,7 @@ def carica_da_file(file_path):
     with open(file_path, "r") as csvfile:
         csvfile.readline()
         csvfile = reader(csvfile)
-
+        #modifica di prova
         anni = [] #lista con tutti gli anni delle foto nel file csv
 
         for foto in csvfile: #scorro su tutte le foto del file
