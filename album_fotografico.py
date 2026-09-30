@@ -11,6 +11,7 @@ def aggiungi_foto(album, codice, titolo, autore, mese, anno, file_path):
 def cerca_foto(album, codice):
     """Cerca una foto nell'album dato il codice"""
     # TODO
+    #  prova
 
 
 def elenco_foto_anno_per_titolo(album, anno):
