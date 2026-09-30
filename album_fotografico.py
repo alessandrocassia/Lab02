@@ -1,6 +1,23 @@
+from csv import reader
+
 def carica_da_file(file_path):
     """Carica le foto dal file, creando un nuovo anno ogni volta che compare per la prima volta"""
-    # TODO
+    with open(file_path, "r") as csvfile:
+        csvfile.readline()
+        csvfile = reader(csvfile)
+
+        anni = [] #lista con tutti gli anni delle foto nel file csv
+
+        for foto in csvfile: #scorro su tutte le foto del file
+            titolo_foto = foto[0] #salvo il codice identificativo della foto
+            anno_foto = foto[4] #salvo l'anno della foto
+
+            if anno_foto not in anni: #verifico che l'anno della foto non sia stato già inserito nell'elenco degli anni
+                anno = dict() #creo un dizionario che alla chiave "anno" (esempio 2012) associa una lista di tutte le foto fatte in quell'anno
+                anno["anno_foto"] = [] #come dicevo, alla chiave anno associo una lista. Ogni elemento della lista sarà un dizionario contenente tutte le foto
+
+                anno[titolo_foto] = foto[1:5]
+                anni.append(anno)
 
 
 def aggiungi_foto(album, codice, titolo, autore, mese, anno, file_path):
@@ -11,12 +28,11 @@ def aggiungi_foto(album, codice, titolo, autore, mese, anno, file_path):
 def cerca_foto(album, codice):
     """Cerca una foto nell'album dato il codice"""
     # TODO
-    #  prova
 
 
 def elenco_foto_anno_per_titolo(album, anno):
     """Ordina i titoli delle foto di un dato anno in ordine alfabetico"""
-    # TODO CHANGE PROVA hh
+    # TODO
 
 
 def main():
