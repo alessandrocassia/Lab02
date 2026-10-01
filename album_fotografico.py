@@ -2,23 +2,40 @@ from csv import reader
 
 def carica_da_file(file_path):
     """Carica le foto dal file, creando un nuovo anno ogni volta che compare per la prima volta"""
-    with open(file_path, "r") as csvfile:
-        csvfile.readline()
-        csvfile = reader(csvfile)
-        #modifica di prova
-        anni = [] #lista con tutti gli anni delle foto nel file csv
+    try:
+        with open(file_path, "r") as csvfile:
+            csvfile.readline() #skip della la prima riga
+            csvfile = reader(csvfile) #creo oggetto reader dal modulo csv
 
-        for foto in csvfile: #scorro su tutte le foto del file
-            titolo_foto = foto[0] #salvo il codice identificativo della foto
-            anno_foto = foto[4] #salvo l'anno della foto
+            anni = [] #lista con tutti gli anni delle foto nel file csv
+            album = [] #struttura dati dell'album fotografico
 
-            if anno_foto not in anni: #verifico che l'anno della foto non sia stato già inserito nell'elenco degli anni
-                anno = dict() #creo un dizionario che alla chiave "anno" (esempio 2012) associa una lista di tutte le foto fatte in quell'anno
-                anno["anno_foto"] = [] #come dicevo, alla chiave anno associo una lista. Ogni elemento della lista sarà un dizionario contenente tutte le foto
+            for foto in csvfile: #scorro su tutte le foto del file
+                codice_foto = foto[0] #salvo il codice identificativo della foto
+                titolo_foto = foto[1]
+                autore_foto = foto[2]
+                mese_foto = foto[3]
+                anno_foto = foto[4] #salvo l'anno della foto
 
-                anno[titolo_foto] = foto[1:5]
-                anni.append(anno)
+                dict_foto = dict() #creo un dizionario per la foto che analizzo
+                dict_foto[codice_foto] = [codice_foto, titolo_foto, autore_foto, mese_foto, anno_foto] #riempio il dizionario
 
+                if anno_foto not in anni: #verifico che l'anno della foto non sia stato già inserito nell'elenco degli anni
+                    anni.append(anno_foto)
+
+                    anno = dict() #dizionario che associa a ciascun anno una lista di foto - - - 2019: [foto1, foto2, foto3]
+                    anno[anno_foto] = [] #lista di tutte le foto
+                    album.append(anno) #aggiungo il dizionario "anno" alla struttura dati
+
+
+                for dizionario in album: #scorro i dizionari/anni dell'album
+                    if anno_foto in dizionario: #trovo il dizionario che ha come chiave l'anno della foto che sto analizzando
+                        dizionario[anno_foto].append(dict_foto) #aggiungo il dizionario della foto analizzata al dizionario dell'anno (quindi all'album)
+                        break
+
+        return album
+    except FileNotFoundError:
+        return None
 
 def aggiungi_foto(album, codice, titolo, autore, mese, anno, file_path):
     """Aggiunge una foto all'album, creando l'anno al volo se non è ancora presente"""
