@@ -8,7 +8,7 @@ def carica_da_file(file_path):
             csvfile = reader(csvfile) #creo oggetto reader dal modulo csv
 
             anni = [] #lista con tutti gli anni delle foto nel file csv
-            album = [] #struttura dati dell'album fotograficoo
+            album = [] #struttura dati dell'album fotografico
 
             for foto in csvfile: #scorro su tutte le foto del file
                 codice_foto = foto[0] #salvo il codice identificativo della foto
