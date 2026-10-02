@@ -1,4 +1,4 @@
-from csv import reader
+from csv import reader, writer
 
 def carica_da_file(file_path):
     """Carica le foto dal file, creando un nuovo anno ogni volta che compare per la prima volta"""
@@ -14,23 +14,23 @@ def carica_da_file(file_path):
                 codice_foto = foto[0] #salvo il codice identificativo della foto
                 titolo_foto = foto[1]
                 autore_foto = foto[2]
-                mese_foto = foto[3]
-                anno_foto = foto[4] #salvo l'anno della foto
+                mese_foto = int(foto[3])
+                anno_foto = int(foto[4]) #salvo l'anno della foto
 
                 dict_foto = dict() #creo un dizionario per la foto che analizzo
-                dict_foto[codice_foto] = [codice_foto, titolo_foto, autore_foto, mese_foto, anno_foto] #riempio il dizionario
+                dict_foto[codice_foto] = [titolo_foto, autore_foto, mese_foto, anno_foto] #riempio il dizionario
 
                 if anno_foto not in anni: #verifico che l'anno della foto non sia stato già inserito nell'elenco degli anni
                     anni.append(anno_foto)
 
                     anno = dict() #dizionario che associa a ciascun anno una lista di foto - - - 2019: [foto1, foto2, foto3]
-                    anno[anno_foto] = [] #lista di tutte le foto
+                    anno[anno_foto] = [] #lista di tutte le foto inizialmente vuota
                     album.append(anno) #aggiungo il dizionario "anno" alla struttura dati
 
 
-                for dizionario in album: #scorro i dizionari/anni dell'album
-                    if anno_foto in dizionario: #trovo il dizionario che ha come chiave l'anno della foto che sto analizzando
-                        dizionario[anno_foto].append(dict_foto) #aggiungo il dizionario della foto analizzata al dizionario dell'anno (quindi all'album)
+                for dict_anno in album: #scorro i dizionari/anni dell'album
+                    if anno_foto in dict_anno: #trovo il dizionario che ha come chiave l'anno della foto che sto analizzando
+                        dict_anno[anno_foto].append(dict_foto) #aggiungo il dizionario della foto analizzata al dizionario dell'anno (quindi all'album)
                         break
 
         return album
@@ -39,7 +39,25 @@ def carica_da_file(file_path):
 
 def aggiungi_foto(album, codice, titolo, autore, mese, anno, file_path):
     """Aggiunge una foto all'album, creando l'anno al volo se non è ancora presente"""
-    # TODO
+
+
+    #2 casi: o l'anno è già nell'album, oppure non lo è
+    for dict_anno in album:
+        if anno in dict_anno:
+            pass
+
+
+    #if non ci sono problemi
+
+    #else (codice già presente, mese fuori intervallo, file non trovato)
+
+    #aggiungi la foto al file, se tutto è andato secondo i piani
+    with open(file_path, "a") as csvfile:
+        csvfile = writer(csvfile)
+        csvfile.writerow([codice,titolo, autore, mese, anno])
+
+
+
 
 
 def cerca_foto(album, codice):
