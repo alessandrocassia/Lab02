@@ -40,25 +40,48 @@ def carica_da_file(file_path):
 def aggiungi_foto(album, codice, titolo, autore, mese, anno, file_path):
     """Aggiunge una foto all'album, creando l'anno al volo se non è ancora presente"""
 
+    #verifica per il mese
+    if mese > 12 or mese < 1:
+        return False
 
-    #2 casi: o l'anno è già nell'album, oppure non lo è
+    #verifica per il codice
+    for dict_anno in album: #scorro gli anni
+        for chiave_anno in dict_anno: #prendo la chiave
+            for dict_foto in dict_anno[chiave_anno]: #scorro le foto
+                if codice in dict_foto: #verifico che il codice sia nel dizionario della foto
+                    return None
+
+    #verifica per il file
+    try:
+          with open(file_path, "a") as csvfile:
+            csvfile = writer(csvfile)
+            csvfile.writerow([codice, titolo, autore, mese, anno]) #scrittura della riga
+    except FileNotFoundError:
+        return None
+
+    dict_foto = dict()
+    dict_foto[codice] = [titolo, autore, mese, anno]  # alla chiave "codice" associo tutti i dati della foto"
+
+    presente = False
     for dict_anno in album:
-        if anno in dict_anno:
-            pass
+        if anno in dict_anno: #in pratica controllo se esiste l'anno della nuova foto come chiave di un dizionario dell'album
+            presente = True
+            break               #se all'interno dell'album c'è già l'anno della foto, presente diventa TRUE
 
+    if presente == False:  #se l'anno non è nell'album ## da qui devo estrapolare come aggiungere la foto anche se l'anno è già presente
+        dict_anno = dict()  #creo il dizionario "anno"
+        dict_anno[anno] = []
 
-    #if non ci sono problemi
+        dict_anno[anno].append(dict_foto)
+        album.append(dict_anno)
 
-    #else (codice già presente, mese fuori intervallo, file non trovato)
+    elif presente == True: #se invece l'anno c'è già
+        for dict_anno in album:
+            if anno in dict_anno:
+                dict_anno[anno].append(dict_foto) #aggiungo la foto alla lista di foto di quell'anno
+                break
 
-    #aggiungi la foto al file, se tutto è andato secondo i piani
-    with open(file_path, "a") as csvfile:
-        csvfile = writer(csvfile)
-        csvfile.writerow([codice,titolo, autore, mese, anno])
-
-
-
-
+    return dict_foto
 
 def cerca_foto(album, codice):
     """Cerca una foto nell'album dato il codice"""
