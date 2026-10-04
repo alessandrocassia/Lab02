@@ -85,8 +85,24 @@ def aggiungi_foto(album, codice, titolo, autore, mese, anno, file_path):
 
 def cerca_foto(album, codice):
     """Cerca una foto nell'album dato il codice"""
-    # TODO
 
+    for dict_anno in album: #se la foto esiste
+        for chiave in dict_anno:
+            for dict_foto in dict_anno[chiave]:
+                if codice in dict_foto:
+                    dati_foto = dict_foto[codice] #estraggo tutti i dati della foto
+
+                    lista_stringhe = [] #alcuni campi del dizionario sono int e non stringhe -> devo convertirli
+                    for elemento in dati_foto:
+                        elemento = str(elemento)
+                        lista_stringhe.append(elemento)
+
+                    stringa_dati = ",".join(lista_stringhe)
+                    stringa = f"{codice},{stringa_dati}"
+
+                    return stringa
+
+    return None
 
 def elenco_foto_anno_per_titolo(album, anno):
     """Ordina i titoli delle foto di un dato anno in ordine alfabetico"""
