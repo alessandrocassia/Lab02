@@ -97,8 +97,8 @@ def cerca_foto(album, codice):
                         elemento = str(elemento)
                         lista_stringhe.append(elemento)
 
-                    stringa_dati = ",".join(lista_stringhe)
-                    stringa = f"{codice},{stringa_dati}"
+                    stringa_dati = ", ".join(lista_stringhe)
+                    stringa = f"{codice}, {stringa_dati}"
 
                     return stringa
 
@@ -106,8 +106,20 @@ def cerca_foto(album, codice):
 
 def elenco_foto_anno_per_titolo(album, anno):
     """Ordina i titoli delle foto di un dato anno in ordine alfabetico"""
-    # TODO
 
+    lista_titoli = []
+    for dict_anno in album: #scorro su tutti i dizionari anno
+        if anno in dict_anno: #mi fermo al dizionario dell'anno in input
+            for dict_foto in dict_anno[anno]: #scorro su tutte le foto associate a quell'anno
+
+                for codice in dict_foto: #prendo il codice di ciascuna foto
+                    titolo = dict_foto[codice][0] #accedo alla lista interna al dizionario e di conseguenza al titolo che si trova in posizione 0
+                    lista_titoli.append(titolo)
+                    lista_titoli.sort()
+
+            return lista_titoli
+
+    return None
 
 def main():
     album = []
@@ -186,7 +198,6 @@ def main():
             break
         else:
             print("Opzione non valida. Riprova.")
-
 
 if __name__ == "__main__":
     main()
