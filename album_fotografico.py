@@ -34,6 +34,7 @@ def carica_da_file(file_path):
                         break
 
         return album
+
     except FileNotFoundError:
         return None
 
